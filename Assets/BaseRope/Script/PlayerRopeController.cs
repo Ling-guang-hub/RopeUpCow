@@ -18,15 +18,15 @@ public class PlayerRopeController: MonoBehaviour
     public GameObject ropeSegmentPrefab;
     public Transform ropeStartPoint;
 
-    public Text textNum;
-    
     private float currentPower;
     private bool _isCharging;
+
+    public Image powerBg;
+    
     // private RopeSystem ropeSystem;
     
     void Start()
     {
-        textNum.text = "0";
         // ropeSystem = GetComponent<RopeSystem>();
     }
     
@@ -34,10 +34,15 @@ public class PlayerRopeController: MonoBehaviour
     {
         // HandleInput();
     }
-    
-    
-    
-    
+
+    public void StartCharging()
+    {
+        
+        
+    }
+
+
+
     void HandleInput()
     {
         // 鼠标按下开始蓄力
@@ -45,7 +50,6 @@ public class PlayerRopeController: MonoBehaviour
         {
             _isCharging = true;
             currentPower = 0f;
-            textNum.text=(currentPower / maxPower).ToString();
         }
         
         // 蓄力过程中
@@ -55,7 +59,6 @@ public class PlayerRopeController: MonoBehaviour
             currentPower = Mathf.Clamp(currentPower, 0, maxPower);
             
             // 显示蓄力条
-            textNum.text=(currentPower / maxPower).ToString();
         }
         
         // 鼠标释放发射绳子

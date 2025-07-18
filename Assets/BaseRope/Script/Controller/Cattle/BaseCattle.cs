@@ -24,9 +24,9 @@ public class BaseCattle : MonoBehaviour
 
     protected Vector3 LastPos;
 
-    public float duringTime;
-
-    public int roadStep;
+    // public float duringTime;
+    //
+    // public int roadStep;
 
     public Vector3 createPos;
 
@@ -48,30 +48,30 @@ public class BaseCattle : MonoBehaviour
         bg2.gameObject.SetActive(!isNew);
     }
 
-
-    private KeyValuePair<Vector3, float> GetRandomPosAndTime()
-    {
-        LastPos = transform.localPosition;
-        int tempX = Random.Range(-roadStep, roadStep);
-        float targetX = LastPos.x + tempX;
-        if (Math.Abs(targetX) >= actWeight / 2)
-        {
-            targetX = LastPos.x - tempX;
-        }
-
-        int tempY = Random.Range(-roadStep, roadStep);
-        float targetY = LastPos.y + tempY;
-        if (Math.Abs(targetY) >= actHeight / 2)
-        {
-            targetY = LastPos.y - tempY;
-        }
-
-        Vector3 nextPos = new Vector3(targetX, targetY, 0);
-
-        double targetWay = Math.Sqrt(Math.Pow(tempX, 2) + Math.Pow(tempY, 2));
-        float time = (float)targetWay / roadStep * duringTime;
-        return new KeyValuePair<Vector3, float>(nextPos, time);
-    }
+    //
+    // private KeyValuePair<Vector3, float> GetRandomPosAndTime()
+    // {
+    //     LastPos = transform.localPosition;
+    //     int tempX = Random.Range(-roadStep, roadStep);
+    //     float targetX = LastPos.x + tempX;
+    //     if (Math.Abs(targetX) >= actWeight / 2)
+    //     {
+    //         targetX = LastPos.x - tempX;
+    //     }
+    //
+    //     int tempY = Random.Range(-roadStep, roadStep);
+    //     float targetY = LastPos.y + tempY;
+    //     if (Math.Abs(targetY) >= actHeight / 2)
+    //     {
+    //         targetY = LastPos.y - tempY;
+    //     }
+    //
+    //     Vector3 nextPos = new Vector3(targetX, targetY, 0);
+    //
+    //     double targetWay = Math.Sqrt(Math.Pow(tempX, 2) + Math.Pow(tempY, 2));
+    //     float time = (float)targetWay / roadStep * duringTime;
+    //     return new KeyValuePair<Vector3, float>(nextPos, time);
+    // }
 
 
     private void OnDestroy()
@@ -91,15 +91,32 @@ public class BaseCattle : MonoBehaviour
     }
 
 
+    private Vector3 GetRandomPos()
+    {
+        return new Vector3(createPos.x + Random.Range(-offsetRange, offsetRange),
+            createPos.y + Random.Range(-offsetRange, offsetRange), 0);
+    }
+
+    private Vector3 GetEffectPos()
+    {
+        Vector3 newPos = GetRandomPos();
+        while (newPos.x<-400f||newPos.x>400f||newPos.y<-100f||newPos.y>800f)
+        {
+            newPos = GetRandomPos();
+        }
+        return newPos;
+    }
+
+
+
     private void DoMove()
     {
         float delayTime = Random.Range(0, 2);
-        // KeyValuePair<Vector3, float> pair = GetRandomPosAndTime();
-        // transform.DOLocalMove(pair.Key, pair.Value).SetEase(Ease.Linear).SetDelay(delayTime)
-        //     .OnComplete(() => { DoMove(); });
 
-        Vector3 newPos = new Vector3(createPos.x + Random.Range(-offsetRange, offsetRange),
-            createPos.y + Random.Range(-offsetRange, offsetRange), 0);
+        // Vector3 newPos = new Vector3(createPos.x + Random.Range(-offsetRange, offsetRange),
+        //     createPos.y + Random.Range(-offsetRange, offsetRange), 0);
+        
+        Vector3 newPos = GetEffectPos();
 
         transform
             .DOLocalMove(newPos, shakeTime).SetDelay(delayTime)

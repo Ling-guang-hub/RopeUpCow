@@ -6,7 +6,6 @@
 //
 
 
-using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,7 +29,7 @@ public class CattleGamePanel : BaseUIForms
     public Button shopBtn;
 
     public Button homeBtn;
-    
+
     // public Text levelText;
 
     public GameObject timeBar;
@@ -38,6 +37,8 @@ public class CattleGamePanel : BaseUIForms
     // public GameObject skillSpeedObj;
 
     // public GameObject skillPowerObj;
+
+    public GameObject topBar;
 
     public GameObject coinImg;
 
@@ -55,40 +56,33 @@ public class CattleGamePanel : BaseUIForms
 
     private bool _isOnPlay;
 
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
 
 
     private void Start()
     {
-        // closeBtn.onClick.AddListener(() =>
-        // {
-        //     CloseGame();
-        //     CowManager.Instance.ShowHomePanel();
-        //     gameObject.SetActive(false);
-        // });
-
         startBtn.onClick.AddListener(() => { TryToStartGame(); });
 
-        // nextBtn.onClick.AddListener(() => { ToNextLevel(); });
+        settingBtn.onClick.AddListener(() => { CowManager.Instance.ShowSettingPop(); });
+
+        shopBtn.onClick.AddListener(() => { CowManager.Instance.ShowPropPop(); });
+
+        homeBtn.onClick.AddListener(() => { FinishGame(); });
         
-        settingBtn.onClick.AddListener(() =>
-        {
-            CowManager.Instance.ShowSettingPop();
-        });
-        
-        shopBtn.onClick.AddListener(() =>
-        {
-            CowManager.Instance.ShowPropPop();
-        });
-        
-        homeBtn.onClick.AddListener(() =>
-        {
-            FinishGame();
-        });
-        
+        DoAdaptation();
+
     }
 
 
@@ -100,6 +94,30 @@ public class CattleGamePanel : BaseUIForms
         InitGame();
     }
 
+
+    private void DoAdaptation()
+    {
+        
+        float width = Screen.width;
+        float height = Screen.height;
+        float rate = width / height;
+        
+        if (rate > 0.5f)
+        {
+            topBar.gameObject.transform.localPosition = new Vector3(-340f, 850f, 0);
+            settingBtn.gameObject.transform.localPosition = new Vector3(440f, 850f, 0);
+            shopBtn.gameObject.transform.localPosition = new Vector3(290f, 850f, 0);
+            homeBtn.gameObject.transform.localPosition = new Vector3(360f, 850f, 0);
+        }
+        else
+        {
+            // 1080*2340
+            topBar.gameObject.transform.localPosition = new Vector3(-340f, 1020f, 0);
+            settingBtn.gameObject.transform.localPosition = new Vector3(440f, 1020f, 0);
+            shopBtn.gameObject.transform.localPosition = new Vector3(290f, 1020f, 0);
+            homeBtn.gameObject.transform.localPosition = new Vector3(360f, 1020f, 0);
+        }
+    }
 
     private void PlayGame()
     {
@@ -151,27 +169,25 @@ public class CattleGamePanel : BaseUIForms
         // }
         // else
         // {
-            StartGame();
+        StartGame();
         // }
-
-
     }
 
 
     private void StartGame()
     {
         if (_isOnPlay) return;
-        
+
         startBtn.gameObject.SetActive(false);
         homeBtn.gameObject.SetActive(true);
         _isOnPlay = true;
-        
+
         gameArea.gameObject.SetActive(true);
         playObj.gameObject.SetActive(true);
-        
+
         shopBtn.gameObject.SetActive(false);
         settingBtn.gameObject.SetActive(false);
-        
+
         ropeLoopObj.gameObject.SetActive(true);
         ropeLoopObj.gameObject.GetComponent<RopeLoopCtrl>().isPlaying = true;
         ropeLoopObj.gameObject.GetComponent<RopeLoopCtrl>().SetSkill(_isPower, _isSpeed);
@@ -248,10 +264,9 @@ public class CattleGamePanel : BaseUIForms
         timeBar.GetComponent<TimeBar>().AddTimeForTimeBar();
         GoOnGame();
     }
-    
+
     public void AddTimeAct(Vector3 startPos)
     {
-        
     }
 
     public void AfterCompletePanel(int num)
@@ -268,7 +283,7 @@ public class CattleGamePanel : BaseUIForms
         await AnimationController.GoldMoveBest(coinImg, coinNum, startPos, coinImg.transform.position);
         AnimationController.ChangeNumber(oldCoin, oldCoin + coinNum, 0.01f, coinText, null);
         RopeUpMainManager.GetInstance().AddCoin(coinNum);
-        coinText.text = "" +SaveDataManager.GetInt(CowConstant.CoinKey);
+        coinText.text = "" + SaveDataManager.GetInt(CowConstant.CoinKey);
     }
 
     public void AddCoinAndDoAnim(int num, Vector3 startPos)
@@ -300,6 +315,7 @@ public class CattleGamePanel : BaseUIForms
                 break;
         }
 
-        coinText.text = "" +  SaveDataManager.GetInt(CowConstant.CoinKey);;
+        coinText.text = "" + SaveDataManager.GetInt(CowConstant.CoinKey);
+        ;
     }
 }

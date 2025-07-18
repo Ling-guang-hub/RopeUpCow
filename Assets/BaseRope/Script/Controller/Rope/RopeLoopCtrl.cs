@@ -9,6 +9,7 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class RopeLoopCtrl : MonoBehaviour
@@ -25,6 +26,8 @@ public class RopeLoopCtrl : MonoBehaviour
 
     public GameObject pointObj;
 
+    public Image powerBg;
+    
     private Vector2 mouseStartPos;
     private bool isDragging;
     private bool isMouseDown;
@@ -128,6 +131,7 @@ public class RopeLoopCtrl : MonoBehaviour
         _isPower = isPower;
         _isSpeed = isSpeed;
         moveSpeed = _isSpeed ? 1f : 2f;
+        powerBg.fillAmount = 0;
     }
 
 
@@ -145,6 +149,9 @@ public class RopeLoopCtrl : MonoBehaviour
         touchStartPos = transform.position;
 
         touchCurrentPos = touchPos;
+
+        powerBg.fillAmount = 0;
+
     }
 
 
@@ -297,12 +304,15 @@ public class RopeLoopCtrl : MonoBehaviour
         forceStartTime = Time.time;
         touchStartPos = transform.position;
 
-        touchCurrentPos = touchPos;
+       touchCurrentPos = touchPos;
+       
+       
     }
 
     private void UpdateCharging(Vector3 touchPos)
     {
-
+        powerBg.fillAmount += Time.deltaTime;
+        
         Vector3 pointDir = touchPos - pointObj.transform.position;
         float angle = Mathf.Atan2(pointDir.y, pointDir.x) * Mathf.Rad2Deg - 90f;
 
@@ -321,6 +331,7 @@ public class RopeLoopCtrl : MonoBehaviour
 
     private void EndCharging(Vector3 touchPos)
     {
+        powerBg.fillAmount = 0;
         DoShoot(touchPos);
     }
 

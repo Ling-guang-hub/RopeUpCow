@@ -57,11 +57,9 @@ MonoBehaviour:
   RewardNum: 5
   actWeight: 0
   actHeight: 0
-  duringTime: 0
-  roadStep: 0
   createPos: {x: 0, y: 0, z: 0}
-  offsetRange: 20
-  shakeTime: 2
+  offsetRange: 600
+  shakeTime: 4
   bg1: {fileID: 2777730811635112100}
   bg2: {fileID: 9025663489412964997}
 --- !u!58 &925938607293455045
