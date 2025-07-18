@@ -1,0 +1,15 @@
+{
+  "BuildTarget": "iOS",
+  "DesState": "DES",
+  "BaseUrl": "http://g.creativecatapp.com/",
+  "GameName": "Rope 'Em Up!",
+  "PackageName": "com.cowboy.ropeemupgame",
+  "BuildCode": 1,
+  "Applovin_SDK_KEY": "Fs-cUqJfRU6DI-3nHAtCUubM2g2mHMT4kl_2_v9IyohMfXicNfA0eEwvSJ6gvrtpXtmu2TpTdL-QrLAMqwaXPS",
+  "Applovin_REWARD_ID": "857c0aedcc6e5929",
+  "Applovin_INTER_ID": "e0870b0ebe6cd83d",
+  "Adjust_APP_ID": "wlc82wpk0vls",
+  "GameCode": "21263",
+  "Rate_ID": "6745201486",
+  "Build_path": "D:\\unity_work\\release\\ScratchCard"
+}
