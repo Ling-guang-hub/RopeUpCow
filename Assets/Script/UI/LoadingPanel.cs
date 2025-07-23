@@ -7,6 +7,7 @@
 
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadingPanel : MonoBehaviour
@@ -15,6 +16,7 @@ public class LoadingPanel : MonoBehaviour
 
     public Text progressText;
 
+    AsyncOperation asyncLoad;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,26 +24,22 @@ public class LoadingPanel : MonoBehaviour
         progressText.text = "0%";
         Application.targetFrameRate = 60;
 
-        // float width = Screen.width;
-        // float height = Screen.height;
-        // LocalCommonData.ScreenRate = width / height;
+        asyncLoad =SceneManager.LoadSceneAsync(0);
+        asyncLoad.allowSceneActivation = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (sliderImage.fillAmount <= 0.8f || NetInfoMgr.instance.ready)
+        // if (sliderImage.fillAmount <= 0.8f || NetInfoMgr.instance.ready)
+        sliderImage.fillAmount += Time.deltaTime / 3f;
+        progressText.text = (int)(sliderImage.fillAmount * 100) + "%";
+        if (sliderImage.fillAmount >= 1)
         {
-            sliderImage.fillAmount += Time.deltaTime / 3f;
-            progressText.text = (int)(sliderImage.fillAmount * 100) + "%";
-            if (sliderImage.fillAmount >= 1)
-            {
-                // PostEventScript.GetInstance().SendEvent("1001");
-                MainManager.instance.GameInit();
-
-                Destroy(transform.parent.gameObject);
-                UIManager.GetInstance().ShowUIForms("CattleHomePanel");
-            }
+            asyncLoad.allowSceneActivation = true;
+            Destroy(transform.parent.gameObject, 0.5f);
+            // UIManager.GetInstance().ShowUIForms("CattleHomePanel");
         }
     }
 }

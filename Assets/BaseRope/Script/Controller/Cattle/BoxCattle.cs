@@ -14,6 +14,8 @@ public class BoxCattle: BaseCattle
     public override void InitData()
     {
         LastPos = transform.localPosition;
+        createPos = transform.localPosition;
+        StartDoMove();
     }
     
     
